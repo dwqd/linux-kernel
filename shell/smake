@@ -1,0 +1,72 @@
+#!/bin/bash
+
+source ./global.mk
+source $SHELL_DIR/arm_func
+source $SHELL_DIR/common
+
+if [ 0 = $# ]; then
+    usage
+    exit
+fi
+
+if [ 1 = $# ]; then
+    if [ $1 = "-arm" ]; then
+        arm_usage
+        exit
+    fi
+fi
+
+if [ 2 = $# ] || [ 3 = $# ] || [ 4 = $# ]; then
+    if [ $1 = "-arm" ]; then
+	    if [ $2 = "zImage" ]; then
+            make_arm_zImage
+        elif [ $2 = "uImage" ]; then
+            make_arm_uImage
+        elif [ $2 = "uboot" ]; then
+            make_arm_boot
+        elif [ $2 = "busybox" ]; then
+            make_arm_busybox
+        elif [ $2 = "rootfs" ]; then
+            build_rootfs
+        elif [ $2 = "clean_rootfs" ]; then
+            clean_rootfs
+        elif [ $2 = "run_uboot" ]; then
+            run_arm_boot
+        elif [ $2 = "debug_uboot" ]; then
+            debug_arm_boot
+        elif [ $2 = "run_zImage" ]; then
+            run_arm_zImage
+        elif [ $2 = "debug_zImage" ]; then
+            debug_arm_zImage
+        elif [ $2 = "clean_kernel" ]; then
+            clean_kernel
+        elif [ $2 = "clean_boot" ]; then
+            clean_boot
+        elif [ $2 = "distclean_kernel" ]; then
+            distclean_kernel
+        elif [ $2 = "distclean_boot" ]; then
+            distclean_boot
+        elif [ $2 = "clean_busybox" ]; then
+            clean_busybox
+        elif [ $2 = "distclean_busybox" ]; then
+            distclean_busybox
+        elif [ $2 = "setup_net" ]; then
+            setup_net
+        elif [ $2 = "modules" ] ; then
+            if [ 3 = $# ]; then
+                make_modules $3
+            else
+                if [ 4 = $# ] && [ $3 = "clean" ]; then
+                    clean_modules
+                fi
+            fi
+        else
+            arm_usage
+        fi
+    else
+        usage
+    fi
+else
+    usage
+fi
+
