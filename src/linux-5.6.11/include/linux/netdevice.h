@@ -1850,6 +1850,7 @@ enum netdev_ml_priv_type {
  *	moves out.
  */
 
+// 网络设备
 struct net_device {
 	char			name[IFNAMSIZ];
 	struct netdev_name_node	*name_node;

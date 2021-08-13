@@ -849,6 +849,7 @@ void __init __weak arch_call_rest_init(void)
 	rest_init();
 }
 
+// 启动内核入口点
 asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 {
 	char *command_line;
@@ -1061,6 +1062,7 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 	kcsan_init();
 
 	/* Do the rest non-__init'ed, we're now alive */
+	/* 上面都初始化之后，这里开始启动内核函数 */
 	arch_call_rest_init();
 
 	prevent_tail_call_optimization();

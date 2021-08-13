@@ -17,6 +17,7 @@
 
 #include <linux/lockdep_types.h>
 
+// 原始自旋锁
 typedef struct raw_spinlock {
 	arch_spinlock_t raw_lock;
 #ifdef CONFIG_DEBUG_SPINLOCK

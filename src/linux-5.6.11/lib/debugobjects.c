@@ -22,6 +22,8 @@
 #include <linux/cpu.h>
 
 #define ODEBUG_HASH_BITS	14
+/* 16384
+*/
 #define ODEBUG_HASH_SIZE	(1 << ODEBUG_HASH_BITS)
 
 #define ODEBUG_POOL_SIZE	1024
@@ -1286,6 +1288,8 @@ static inline void debug_objects_selftest(void) { }
  * Called during early boot to initialize the hash buckets and link
  * the static object pool objects into the poll list. After this call
  * the object tracker is fully operational.
+ * 在早期启动期间调用以初始化哈希桶并将静态对象池对象链接到轮询列表中。
+ *  在此调用之后，对象跟踪器完全可操作
  */
 void __init debug_objects_early_init(void)
 {
