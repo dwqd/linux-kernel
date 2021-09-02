@@ -36,6 +36,8 @@ static void copy_boot_params(void)
 		(const struct old_cmdline *)OLD_CL_ADDRESS;
 
 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
+	// 这里的memcpy copy.s 里面的，并不是c 里面的
+	// hdr 是header.s 里面的(hdr 结构)
 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 
 	if (!boot_params.hdr.cmd_line_ptr &&
@@ -66,10 +68,12 @@ static void keyboard_init(void)
 	struct biosregs ireg, oreg;
 	initregs(&ireg);
 
+	//方法调用initregs初始化寄存器结构，然后调用0x16中断来获取键盘状态
 	ireg.ah = 0x02;		/* Get keyboard status */
 	intcall(0x16, &ireg, &oreg);
 	boot_params.kbd_status = oreg.al;
-
+	
+	//再次调用0x16中断来设置键盘的按键检测频率
 	ireg.ax = 0x0305;	/* Set keyboard repeat rate */
 	intcall(0x16, &ireg, NULL);
 }
@@ -155,12 +159,15 @@ void main(void)
 	set_bios_mode();
 
 	/* Detect memory layout */
+	// 检测内存布局
 	detect_memory();
 
 	/* Set keyboard repeat rate (why?) and query the lock flags */
+	// 键盘初始化
 	keyboard_init();
 
 	/* Query Intel SpeedStep (IST) information */
+	//查询 Intel SpeedStep (IST) 信息
 	query_ist();
 
 	/* Query APM information */

@@ -28,7 +28,7 @@
  */
 struct mm_struct init_mm = {
 	.mm_rb		= RB_ROOT,
-	.pgd		= swapper_pg_dir,
+	.pgd		= swapper_pg_dir, // 这里可以用来索引内核页表
 	.mm_users	= ATOMIC_INIT(2),
 	.mm_count	= ATOMIC_INIT(1),
 	.write_protect_seq = SEQCNT_ZERO(init_mm.write_protect_seq),

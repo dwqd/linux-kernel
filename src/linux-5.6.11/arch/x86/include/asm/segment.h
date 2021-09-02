@@ -222,6 +222,7 @@
 
 #endif
 
+// 最多支持256个中断
 #define IDT_ENTRIES			256
 #define NUM_EXCEPTION_VECTORS		32
 

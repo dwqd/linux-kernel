@@ -5,7 +5,7 @@
 
 /*
  * Logical memory blocks.
- *
+ * 逻辑内存块
  * Copyright (C) 2001 Peter Bergner, IBM Corp.
  */
 
@@ -43,7 +43,7 @@ enum memblock_flags {
  * struct memblock_region - represents a memory region
  * @base: base address of the region
  * @size: size of the region
- * @flags: memory region attributes
+ * @flags: memory region attributes（属性）
  * @nid: NUMA node id
  */
 struct memblock_region {
@@ -57,7 +57,7 @@ struct memblock_region {
 
 /**
  * struct memblock_type - collection of memory regions of certain type
- * @cnt: number of regions
+ * @cnt: number of regions 区域数量
  * @max: size of the allocated array
  * @total_size: size of all regions
  * @regions: array of regions
@@ -75,18 +75,19 @@ struct memblock_type {
  * struct memblock - memblock allocator metadata
  * @bottom_up: is bottom up direction?
  * @current_limit: physical address of the current allocation limit
- * @memory: usable memory regions
- * @reserved: reserved memory regions
+ * @memory: usable(可用的) memory regions
+ * @reserved: reserved(保留的) memory regions
  */
 struct memblock {
-	bool bottom_up;  /* is bottom up direction? */
-	phys_addr_t current_limit;
+	bool bottom_up;  /* is bottom up direction? true时允许内存以自底向上模式进行分配*/
+	phys_addr_t current_limit; /* 内存块的尺寸限制 */
 	struct memblock_type memory;
 	struct memblock_type reserved;
 };
 
 extern struct memblock memblock;
 
+//如果这个编译配置选项开启，内存块的代码会被放置在 .init 段，这样它就会在内核引导完毕后被释放掉。
 #ifndef CONFIG_ARCH_KEEP_MEMBLOCK
 #define __init_memblock __meminit
 #define __initdata_memblock __meminitdata

@@ -409,7 +409,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
 	/* Report address of 32-bit trampoline */
 	debug_putaddr(trampoline_32bit);
 #endif
-
+	//随机化从调用这个函数开始
 	choose_random_location((unsigned long)input_data, input_len,
 				(unsigned long *)&output,
 				needed_size,
@@ -436,6 +436,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
 		error("Destination virtual address changed when not relocatable");
 #endif
 
+	// 解压内核
 	debug_putstr("\nDecompressing Linux... ");
 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
 			NULL, error);

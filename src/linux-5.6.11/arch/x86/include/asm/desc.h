@@ -386,6 +386,7 @@ void alloc_intr_gate(unsigned int n, const void *addr);
 static inline void init_idt_data(struct idt_data *data, unsigned int n,
 				 const void *addr)
 {
+	//宏确保了传入的中断向量号不会大于255 ,因为我们最多只有 256 个中断
 	BUG_ON(n > 0xFF);
 
 	memset(data, 0, sizeof(*data));

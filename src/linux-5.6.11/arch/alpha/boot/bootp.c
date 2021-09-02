@@ -117,7 +117,7 @@ load(unsigned long dst, unsigned long src, unsigned long count)
  * Start the kernel.
  */
 static inline void
-runkernel(void)
+runkernel(void)/* 目前猜测 jmp ($27) 调用函数数组中的第27个函数*/
 {
 	__asm__ __volatile__(
 		"bis %0,%0,$27\n\t"

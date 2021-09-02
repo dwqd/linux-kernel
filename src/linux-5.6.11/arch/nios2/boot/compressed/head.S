@@ -12,6 +12,7 @@
 /*
  *  This code can be loaded anywhere, eg FLASH ROM as reset vector,
  *  as long as output does not overlap it.
+ *  该代码可以加载到任何地方，例如作为复位向量的 FLASH ROM，只要输出不与其重叠即可。
  */
 
 #include <linux/linkage.h>
@@ -76,7 +77,7 @@ finish_move:
 	stw	r5, 4(sp)
 	stw	r6, 8(sp)
 	stw	r7, 12(sp)
-	/* decompress the kernel */
+	/* decompress(解压) the kernel */
 	call	decompress_kernel
 	/* pass saved args to kernel */
 	ldw	r4, 0(sp)

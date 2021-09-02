@@ -18,9 +18,9 @@
 SYM_FUNC_START_NOALIGN(memcpy)
 	pushw	%si
 	pushw	%di
-	movw	%ax, %di
-	movw	%dx, %si
-	pushw	%cx
+	movw	%ax, %di  ;move &boot_param.hdr to di
+	movw	%dx, %si  ;move &hdr to si
+	pushw	%cx       ;push cx to stack ( sizeof(hdr) )
 	shrw	$2, %cx
 	rep; movsl
 	popw	%cx

@@ -269,7 +269,7 @@ SYM_FUNC_START(startup_32)
 	movl	%eax, %cr0
 
 	/* Jump from 32bit compatibility mode into 64bit mode. */
-	lret
+	lret    /* 跳转到执行模块 */
 SYM_FUNC_END(startup_32)
 
 #ifdef CONFIG_EFI_MIXED
@@ -564,7 +564,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
 	popq	%rsi
 
 /*
- * Jump to the decompressed kernel.
+ * Jump to the decompressed kernel. 跳转到解压后的内核
  */
 	jmp	*%rax
 SYM_FUNC_END(.Lrelocated)

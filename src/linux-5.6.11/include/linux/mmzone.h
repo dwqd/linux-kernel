@@ -450,6 +450,7 @@ struct zone {
 	/* Read-mostly fields */
 
 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+	/* 表征了我们当前zone的page的使用情况，当watermark过高时，会自动启动内存回收算法 */
 	unsigned long _watermark[NR_WMARK];
 	unsigned long watermark_boost;
 
@@ -464,6 +465,7 @@ struct zone {
 	 * recalculated at runtime if the sysctl_lowmem_reserve_ratio sysctl
 	 * changes.
 	 */
+	/* 一个动态的数组，主要功能是保留一些低位内存空间，以防止当在高区有大量可释放的内存，但我们却在低区启动了OOM。也是一种预留内存。 */
 	long lowmem_reserve[MAX_NR_ZONES];
 
 #ifdef CONFIG_NUMA
@@ -485,7 +487,8 @@ struct zone {
 	 */
 	unsigned long		*pageblock_flags;
 #endif /* CONFIG_SPARSEMEM */
-
+	
+	//当前zone起始的物理页面号。而通过zone_start_pfn+spanned_pages可获得该zone的结束物理页面号。
 	/* zone_start_pfn == zone_start_paddr >> PAGE_SHIFT */
 	unsigned long		zone_start_pfn;
 
@@ -528,6 +531,7 @@ struct zone {
 	 * present_pages should get_online_mems() to get a stable value.
 	 */
 	atomic_long_t		managed_pages;
+	// 表征当前zone中含有的page frames数目
 	unsigned long		spanned_pages;
 	unsigned long		present_pages;
 #ifdef CONFIG_CMA
@@ -556,6 +560,7 @@ struct zone {
 	ZONE_PADDING(_pad1_)
 
 	/* free areas of different sizes */
+	/*表征当前zone中还有多少空余可供分配的page frames */
 	struct free_area	free_area[MAX_ORDER];
 
 	/* zone flags, see below */
@@ -737,7 +742,7 @@ struct deferred_split {
 };
 #endif
 
-/*
+/* 不是均匀存存储的
  * On NUMA machines, each NUMA node would have a pg_data_t to describe
  * it's memory layout. On UMA machines there is a single pglist_data which
  * describes the whole memory.

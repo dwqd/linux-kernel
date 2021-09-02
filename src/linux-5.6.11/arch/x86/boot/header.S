@@ -137,6 +137,7 @@ optional_header:
 	.long	0				# data
 #endif
 
+# 额外头
 extra_header_fields:
 	# PE specification requires ImageBase to be 64k aligned
 	.set	image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
@@ -185,7 +186,7 @@ extra_header_fields:
 	.quad	0				# CertificationTable
 	.quad	0				# BaseRelocationTable
 
-	# Section table
+# Section table 区段表
 section_table:
 	#
 	# The offset & size fields are filled in by build.c.
@@ -290,7 +291,7 @@ root_dev:	.word 0			/* Filled in by build.c */
 boot_flag:	.word 0xAA55
 
 	# offset 512, entry point
-
+# 类似PE文件构建好了， 正式入口
 	.globl	_start
 _start:
 		# Explicitly enter this as bytes, or the assembler
@@ -585,13 +586,14 @@ start_of_setup:
 # Force %es = %ds
 	movw	%ds, %ax
 	movw	%ax, %es
-	cld
+	cld	# 允许中断发生
 
 # Apparently some ancient versions of LILO invoked the kernel with %ss != %ds,
 # which happened to work by accident for the old code.  Recalculate the stack
 # pointer if %ss is invalid.  Otherwise leave it alone, LOADLIN sets up the
 # stack behind its own code, so we can't blindly put it directly past the heap.
-
+# 在设置了 ds 和 es 寄存器之后， （上面是原因，这里是理解并不是翻译）
+# 接下来 step 的代码将检查 ss 寄存器的内容，如果寄存器的内容不对，那么将进行更正：
 	movw	%ss, %dx
 	cmpw	%ax, %dx	# %ds == %ss?
 	movw	%sp, %dx
@@ -616,22 +618,26 @@ start_of_setup:
 
 # We will have entered with %cs = %ds+0x20, normalize %cs so
 # it is on par with the other segments.
-	pushw	%ds
-	pushw	$6f
-	lretw
-6:
+	pushw	%ds	# 一个小技巧 ds入栈
+	pushw	$6f	# 标号6的代码入栈
+	lretw		# 把标号为6的内存地址放入到ip 寄存器，将ds寄存器，放入到cs寄存器
+6:			# cs 和 ds 与相同的值
 
 # Check signature at end of setup
+	# 正式执行 C 代码之前 需要做以下2步
+	# 		1.设置正确的 BSS段
+	# 		2.检查 magic 签名
 	cmpl	$0x5a5aaa55, setup_sig
 	jne	setup_bad
 
 # Zero the bss
 	movw	$__bss_start, %di
-	movw	$_end+3, %cx
+	movw	$_end+3, %cx # $_end+3(为了4字节对齐)
 	xorl	%eax, %eax
-	subw	%di, %cx
-	shrw	$2, %cx
+	subw	%di, %cx # 计算 BSS 段的大小（ cx - di ），然后将大小放入 cx 寄存器
+	shrw	$2, %cx # 接下来将 cx 寄存器除4
 	rep; stosl
+	# (rep; stosl) ：指令将 ax 寄存器的值（0）写入 寄存器整个 BSS 段
 
 # Jump to C code (should not return)
 	calll	main

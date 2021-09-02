@@ -568,6 +568,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
 {
 	bool insert = false;
 	phys_addr_t obase = base;
+	/* 内核区域的结束点*/
 	phys_addr_t end = base + memblock_cap_size(base, &size);
 	int idx, nr_new;
 	struct memblock_region *rgn;
@@ -678,7 +679,7 @@ int __init_memblock memblock_add_node(phys_addr_t base, phys_addr_t size,
  * 0 on success, -errno on failure.
  */
 int __init_memblock memblock_add(phys_addr_t base, phys_addr_t size)
-{
+{	
 	phys_addr_t end = base + size - 1;
 
 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,

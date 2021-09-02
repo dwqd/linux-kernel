@@ -48,6 +48,7 @@ void error(char *x)
 }
 
 /* activate the code for pre-boot environment */
+/* 激活预引导环境的代码 -- 内核压缩采用的算法（选取一个）*/
 #define STATIC static
 
 #ifdef CONFIG_KERNEL_GZIP

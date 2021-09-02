@@ -429,6 +429,7 @@ static unsigned long get_cmd_line_ptr(void)
 	return cmd_line_ptr;
 }
 
+// __init 表示只是在初始化的时候使用，并且用完后会释放
 static void __init copy_bootdata(char *real_mode_data)
 {
 	char * command_line;
@@ -491,6 +492,7 @@ asmlinkage __visible void __init x86_64_start_kernel(char * real_mode_data)
 
 	kasan_early_init();
 
+	// 设置中断描述符表
 	idt_setup_early_handler();
 
 	copy_bootdata(__va(real_mode_data));
@@ -503,6 +505,7 @@ asmlinkage __visible void __init x86_64_start_kernel(char * real_mode_data)
 	/* set init_top_pgt kernel high mapping*/
 	init_top_pgt[511] = early_top_pgt[511];
 
+	// 内核入口点的最后一步
 	x86_64_start_reservations(real_mode_data);
 }
 

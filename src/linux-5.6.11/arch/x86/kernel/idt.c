@@ -181,6 +181,7 @@ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sy
 	}
 }
 
+				//  中断号，中断处理地址
 static __init void set_intr_gate(unsigned int n, const void *addr)
 {
 	struct idt_data data;

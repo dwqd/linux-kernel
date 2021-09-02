@@ -849,7 +849,7 @@ void __init __weak arch_call_rest_init(void)
 	rest_init();
 }
 
-// 启动内核入口点
+// 启动内核入口点 yang
 asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 {
 	char *command_line;

@@ -67,6 +67,7 @@ struct mem_cgroup;
 #define _struct_page_alignment
 #endif
 
+/*一般来说 一个page的大小是4K，是管理物理内存的最小单位*/
 struct page {
 	unsigned long flags;		/* Atomic flags, some possibly
 					 * updated asynchronously */
