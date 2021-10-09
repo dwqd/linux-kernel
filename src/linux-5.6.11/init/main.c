@@ -825,16 +825,16 @@ static void __init mm_init(void)
 	 * bigger than MAX_ORDER unless SPARSEMEM.
 	 */
 	page_ext_init_flatmem();
-	init_mem_debugging_and_hardening();
+	init_mem_debugging_and_hardening(); // 1
 	kfence_alloc_pool();
-	report_meminit();
+	report_meminit(); // 2
 	stack_depot_init();
-	mem_init();
+	mem_init(); //3 
 	/* page_owner must be initialized after buddy is ready */
 	page_ext_init_flatmem_late();
-	kmem_cache_init();
+	kmem_cache_init(); //4
 	kmemleak_init();
-	pgtable_init();
+	pgtable_init(); //5
 	debug_objects_mem_init();
 	vmalloc_init();
 	ioremap_huge_init();
@@ -906,7 +906,7 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 	vfs_caches_init_early();
 	sort_main_extable();
 	trap_init();
-	mm_init();
+	mm_init(); // 内存初始化
 
 	ftrace_init();
 
