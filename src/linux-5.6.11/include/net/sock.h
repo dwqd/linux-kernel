@@ -1133,6 +1133,7 @@ static inline void sk_prot_clear_nulls(struct sock *sk, int size)
 
 /* Networking protocol blocks we attach to sockets.
  * socket layer -> transport layer interface
+	yang:网络传输层
  */
 struct proto {
 	void			(*close)(struct sock *sk,

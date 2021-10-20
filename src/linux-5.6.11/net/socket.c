@@ -1942,6 +1942,7 @@ SYSCALL_DEFINE3(getpeername, int, fd, struct sockaddr __user *, usockaddr,
  *	Send a datagram to a given address. We move the address into kernel
  *	space and check the user space data area is readable before invoking
  *	the protocol.
+	为无链接报文准备的
  */
 int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
 		 struct sockaddr __user *addr,  int addr_len)
@@ -2416,6 +2417,10 @@ long __sys_sendmsg_sock(struct socket *sock, struct msghdr *msg,
 	return ____sys_sendmsg(sock, msg, flags, NULL, 0);
 }
 
+/*
+*	最复杂的（是函数的推广与加强）
+	每一个user_msghdr 代表一个报文
+*/
 long __sys_sendmsg(int fd, struct user_msghdr __user *msg, unsigned int flags,
 		   bool forbid_cmsg_compat)
 {
@@ -2819,6 +2824,7 @@ SYSCALL_DEFINE5(recvmmsg_time32, int, fd, struct mmsghdr __user *, mmsg,
 }
 #endif
 
+// socket 数组
 #ifdef __ARCH_WANT_SYS_SOCKETCALL
 /* Argument list sizes for sys_socketcall */
 #define AL(x) ((x) * sizeof(unsigned long))
@@ -2837,6 +2843,7 @@ static const unsigned char nargs[21] = {
  *	Argument checking cleaned up. Saved 20% in size.
  *  This function doesn't need to set the kernel lock because
  *  it is set by the callees.
+ *  socket_call ，这里来区分类型，如：建立链接，没有建立链接，发生链接请求等等
  */
 
 SYSCALL_DEFINE2(socketcall, int, call, unsigned long __user *, args)

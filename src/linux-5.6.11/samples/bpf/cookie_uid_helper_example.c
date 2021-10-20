@@ -223,6 +223,7 @@ static void udp_client(void)
 		error(1, errno, "rcv socket creat failed!\n");
 	si_other.sin_family = AF_INET;
 	si_other.sin_port = htons(PORT);
+	// 把ip 地址转换为 一串数字->> 这个函数 sockaddr_in
 	if (inet_aton("127.0.0.1", &si_other.sin_addr) == 0)
 		error(1, errno, "inet_aton\n");
 	if (bind(s_rcv, (struct sockaddr *)&si_other, sizeof(si_other)) == -1)
