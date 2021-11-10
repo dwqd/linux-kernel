@@ -110,7 +110,7 @@ int ip_forward(struct sk_buff *skb)
 	skb_forward_csum(skb);
 	net = dev_net(skb->dev);
 
-	/*
+	/*	首先判断ttl 这个属性的之是否小于或等于1
 	 *	According to the RFC, we must first decrease the TTL field. If
 	 *	that reaches zero, we must reply an ICMP control message telling
 	 *	that the packet's lifetime expired.
@@ -158,7 +158,7 @@ int ip_forward(struct sk_buff *skb)
 		       net, NULL, skb, skb->dev, rt->dst.dev,
 		       ip_forward_finish);
 
-sr_failed:
+sr_failed: //失败--------------------------
 	/*
 	 *	Strict routing permits no gatewaying
 	 */

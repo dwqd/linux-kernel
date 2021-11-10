@@ -350,6 +350,9 @@ int peernet2id(const struct net *net, struct net *peer);
 bool peernet_has_id(const struct net *net, struct net *peer);
 struct net *get_net_ns_by_id(const struct net *net, int id);
 
+/* 内核命名空间链表
+	这里管理着网络命名空间，添加，删除
+*/
 struct pernet_operations {
 	struct list_head list;
 	/*
